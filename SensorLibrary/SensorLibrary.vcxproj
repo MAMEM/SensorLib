@@ -77,9 +77,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\local\boost_1_65_0\boost;C:\Users\geol\Documents\Visual Studio 2015\Projects\SensorLibraryAndClient\SensorLibrary\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\local\boost_1_65_0\lib32-msvc-14.0;C:\Users\geol\Documents\Visual Studio 2015\Projects\SensorLibraryAndClient\SensorLibrary\lib;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\Users\geol\Documents\Visual Studio 2015\Projects\SensorLibraryAndClient\SensorLibrary\src;$(SourcePath)</SourcePath>
+    <IncludePath>C:\local\boost_1_65_0\boost;$(SolutionDir)\SensorLibrary\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\local\boost_1_65_0\lib32-msvc-14.0;$(SolutionDir)\SensorLibrary\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SolutionDir)\SensorLibrary\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -119,7 +119,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SENSORLIBRARY_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\local\boost_1_65_0;C:\Users\geol\Documents\Visual Studio 2015\Projects\SensorLibraryAndClient\SensorLibrary\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\local\boost_1_65_0;$(SolutionDir)\SensorLibrary\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
