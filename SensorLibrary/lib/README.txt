@@ -1,0 +1,3 @@
+-edk.lib
+-liblsl32.lib
+-myGAZEAPI.lib
