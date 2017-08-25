@@ -1,0 +1,2 @@
+- edk.dll
+- liblsl32.dll
