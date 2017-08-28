@@ -25,9 +25,6 @@ namespace SensorLib
 		//record to file
 
 		lsl::stream_info getStreamInfo();
-		virtual void record(std::string filename) = 0;
-		//stop recording
-		virtual void stopRecording(std::string filename) = 0;
 
 		std::string name;
 		int numChannels;

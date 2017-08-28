@@ -11,6 +11,7 @@
 #include "EmotivSensor.h"
 
 
+
 namespace SensorLib
 {
 	class Recorder;
@@ -26,15 +27,6 @@ namespace SensorLib
 
 		SENSORLIBRARY_API void startRecording(std::string filename);
 		SENSORLIBRARY_API void stopRecording(void);
-
-		// Returns a + b  
-		static SENSORLIBRARY_API double Add(double a, double b);
-
-		// Returns a * b  
-		static SENSORLIBRARY_API double Multiply(double a, double b);
-
-		// Returns a + (a * b)  
-		static SENSORLIBRARY_API double AddMultiply(double a, double b);
 
 		Recorder *recorder;
 	private:

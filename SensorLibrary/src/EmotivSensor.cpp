@@ -40,14 +40,6 @@ __declspec(dllexport) void  EmotivSensor::disconnect() {
 	lslrunning = false;
 }
 
-void EmotivSensor::record(std::string filename) {
-
-}
-
-void EmotivSensor::stopRecording(std::string filename) {
-
-}
-
 void EmotivSensor::lsl_worker() {
 	std::cout << "inside thread" << std::endl;
 #ifdef EPOC__
@@ -123,6 +115,7 @@ void EmotivSensor::lsl_worker() {
 			.append_child_value("type", "EEG");
 	}
 	lsl::stream_outlet outlet(outletInfo);
+	//while(false){
 	while (lslrunning) {
 		state = IEE_EngineGetNextEvent(eEvent);
 		if (state == EDK_OK) {
@@ -169,6 +162,8 @@ void EmotivSensor::lsl_worker() {
 			}
 			Sleep(1);
 		}
+		if (!readytocollect) 
+			Sleep(5000);
 	}
 	status = BUSY;
 	IEE_EngineDisconnect();

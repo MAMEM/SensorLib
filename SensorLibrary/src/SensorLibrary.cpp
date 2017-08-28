@@ -1,12 +1,13 @@
 #include "stdafx.h"  
 #include "SensorLibrary.h"  
 #include "Recorder.h"
-
+#include "MyGazeSensor.h"
 
 namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
 		sensors.push_back(new EmotivSensor);
+		sensors.push_back(new MyGazeSensor);
 		for (size_t i = 0; i < sensors.size(); i++) {
 			sensors[i]->connect();
 		}
@@ -32,20 +33,5 @@ namespace SensorLib
 
 	void SensorLibrary::stopRecording() {
 		recorder->stopRecording();
-	}
-
-	double SensorLibrary::Add(double a, double b)
-	{
-		return a + b;
-	}
-
-	double SensorLibrary::Multiply(double a, double b)
-	{
-		return a * b;
-	}
-
-	double SensorLibrary::AddMultiply(double a, double b)
-	{
-		return a + (a * b);
 	}
 }

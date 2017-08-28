@@ -39,6 +39,9 @@
     <ClInclude Include="include\Recorder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\MyGazeSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SensorLibrary.cpp">
@@ -57,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Recorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGazeSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

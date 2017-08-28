@@ -126,7 +126,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>edk.lib;liblsl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>edk.lib;liblsl32.lib;myGazeAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,8 +157,12 @@
     <ClInclude Include="include\EmotivSensor.h" />
     <ClInclude Include="include\Sensor.h" />
     <ClInclude Include="include\Recorder.h" />
+    <ClInclude Include="include\MyGazeSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\MyGazeSensor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Recorder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>

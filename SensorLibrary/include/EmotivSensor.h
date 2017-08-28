@@ -22,8 +22,6 @@ namespace SensorLib {
 		__declspec(dllexport) virtual SensorStatus getStatus();
 		__declspec(dllexport) virtual void connect();
 		__declspec(dllexport) virtual void disconnect();
-		__declspec(dllexport) virtual void record(std::string filename);
-		__declspec(dllexport) virtual void stopRecording(std::string filename);
 	protected:
 		virtual void lsl_worker();
 	};
