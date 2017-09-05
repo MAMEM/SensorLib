@@ -17,11 +17,11 @@ namespace SensorLib {
 	
 	class MyGazeSensor : public Sensor {
 	public:
-		__declspec(dllexport) MyGazeSensor();
+		 MyGazeSensor();
 		~MyGazeSensor();
-		__declspec(dllexport) virtual SensorStatus getStatus();
-		__declspec(dllexport) virtual void connect();
-		__declspec(dllexport) virtual void disconnect();
+		virtual SensorStatus getStatus();
+		virtual void connect();
+		virtual void disconnect();
 		//std::unique_ptr<lsl::stream_outlet> MyGazeSensor::myGazeOutlet;
 		static int __stdcall SampleCallbackFunction(SampleStruct sampleData);
 	protected:
