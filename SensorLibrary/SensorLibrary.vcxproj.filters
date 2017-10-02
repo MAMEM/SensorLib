@@ -42,6 +42,9 @@
     <ClInclude Include="include\MyGazeSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\EnobioSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SensorLibrary.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MyGazeSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnobioSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

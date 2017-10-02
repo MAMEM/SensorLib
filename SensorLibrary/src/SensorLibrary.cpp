@@ -2,12 +2,14 @@
 #include "SensorLibrary.h"  
 #include "Recorder.h"
 #include "MyGazeSensor.h"
+#include "EnobioSensor.h"
 
 namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
 		sensors.push_back(new EmotivSensor);
 		sensors.push_back(new MyGazeSensor);
+		sensors.push_back(new EnobioSensor);
 		for (size_t i = 0; i < sensors.size(); i++) {
 			sensors[i]->connect();
 		}
