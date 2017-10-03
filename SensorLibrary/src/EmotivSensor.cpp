@@ -1,7 +1,7 @@
 #include "EmotivSensor.h"
 //#define EPOC__
 using namespace SensorLib;
-__declspec(dllexport) EmotivSensor::EmotivSensor(void) {
+EmotivSensor::EmotivSensor(void) {
 	type = EEG;
 #ifdef EPOC__
 	name = "EPOC";
@@ -28,20 +28,17 @@ SensorStatus EmotivSensor::getStatus() {
 	return status;
 }
 
-__declspec(dllexport) void EmotivSensor::connect() {
+void EmotivSensor::connect() {
 	status = BUSY;
-	std::cout << "connect" << std::endl;
 	lslrunning = true;
 	lsl_thread = new std::thread(&EmotivSensor::lsl_worker,this);
-	std::cout << "dispatched thread" << std::endl;
 }
 
-__declspec(dllexport) void  EmotivSensor::disconnect() {
+void  EmotivSensor::disconnect() {
 	lslrunning = false;
 }
 
 void EmotivSensor::lsl_worker() {
-	std::cout << "inside thread" << std::endl;
 #ifdef EPOC__
 	IEE_DataChannel_t EpocChannelList[] = {
 
@@ -67,7 +64,6 @@ void EmotivSensor::lsl_worker() {
 		IED_SYNC_SIGNAL
 	};
 #endif
-	std::cout << "executed 1 line of code " << std::endl;
 	const char header[] = "	IED_COUNTER, IED_INTERPOLATED, IED_AF3, IED_F7, IED_F3, IED_FC5, IED_T7, "
 		"IED_P7, IED_O1, IED_O2, IED_P8, IED_T8, IED_FC6, IED_F4, IED_F8, IED_AF4, IED_RAW_CQ, "
 		"IED_GYROX, IED_GYROY, IED_MARKER, IED_TIMESTAMP ";

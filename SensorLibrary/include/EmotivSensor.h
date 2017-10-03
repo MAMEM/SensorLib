@@ -17,11 +17,11 @@
 namespace SensorLib {
 	class EmotivSensor : public Sensor {
 	public:	
-		__declspec(dllexport) EmotivSensor();
+		 EmotivSensor();
 		~EmotivSensor();
-		__declspec(dllexport) virtual SensorStatus getStatus();
-		__declspec(dllexport) virtual void connect();
-		__declspec(dllexport) virtual void disconnect();
+		 virtual SensorStatus getStatus();
+		 virtual void connect();
+		 virtual void disconnect();
 	protected:
 		virtual void lsl_worker();
 	};

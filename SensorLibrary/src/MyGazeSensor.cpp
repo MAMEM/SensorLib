@@ -2,7 +2,7 @@
 
 using namespace SensorLib;
 lsl::stream_outlet* MyGazeSensor::upOutlet;
-__declspec(dllexport) MyGazeSensor::MyGazeSensor(void) {
+ MyGazeSensor::MyGazeSensor(void) {
 	type = ET;
 	name = "MyGaze";
 	device = MYGAZE;
@@ -20,7 +20,7 @@ SensorStatus MyGazeSensor::getStatus() {
 	return status;
 }
 
-__declspec(dllexport) void MyGazeSensor::connect() {
+void MyGazeSensor::connect() {
 	status = BUSY;
 	std::cout << "connect" << std::endl;
 	lslrunning = true;
@@ -28,7 +28,7 @@ __declspec(dllexport) void MyGazeSensor::connect() {
 	std::cout << "MyGaze: dispatched thread" << std::endl;
 }
 
-__declspec(dllexport) void MyGazeSensor::disconnect() {
+void MyGazeSensor::disconnect() {
 	lslrunning = false;
 }
 
