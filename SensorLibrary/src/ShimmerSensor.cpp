@@ -1,50 +1,102 @@
+#include "stdafx.h"
 #include "ShimmerSensor.h"
-//#define EPOC__
+#include <windows.h>
+#include <stdio.h>
+#include <tchar.h>
+#include <sstream>
+
+#define MAX_KEY_LENGTH 255
+#define MAX_VALUE_NAME 16383
 using namespace SensorLib;
-__declspec(dllexport) ShimmerSensor::ShimmerSensor(void) {
-	type = BIO;
-	name = "shimmer";
+
+
+ShimmerSensor::ShimmerSensor()
+{
+	type = ET;
+	name = "Shimmer";
+	device = SHIMMER;
 	status = NOT_CONNECTED;
 	lslrunning = false;
 	numChannels = 2;
 	samplingRate = 256;
 }
 
-EnobioSensor::~ShimmerSensor(void) {
 
+ShimmerSensor::~ShimmerSensor()
+{
 }
+
 
 SensorStatus ShimmerSensor::getStatus() {
 	return status;
 }
 
-__declspec(dllexport) void ShimmerSensor::connect() {
+void ShimmerSensor::connect() {
 	status = BUSY;
 	std::cout << "connect" << std::endl;
 	lslrunning = true;
 	lsl_thread = new std::thread(&ShimmerSensor::lsl_worker, this);
-	std::cout << "dispatched thread" << std::endl;
+
+	std::cout << "SensorStatus: dispatched thread" << std::endl;
 }
 
-__declspec(dllexport) void  ShimmerSensor::disconnect() {
+void ShimmerSensor::disconnect() {
 	lslrunning = false;
 }
 
-//LSL inlet will be provided by NIC application, this just checks if it is available
 void ShimmerSensor::lsl_worker() {
-	while (lslrunning) {
-		std::vector<lsl::stream_info> results = lsl::resolve_stream("type", "EEG");
-		for (size_t i = 0; i < results.size(); i++) {
-			if (!strcmp(results[i].name().c_str(), "enobio")) {
-				status = STREAMING;
-				//std::cout << "status:Streaming" << std::endl;
-			}
-			else {
-				status = NOT_CONNECTED;
-				//std::cout << "status:NotConnected" << std::endl;
-			}
-		}
-		Sleep(10000);
-		//lsl::stream_inlet inlet(results[0]);
+	//SystemInfoStruct systemInfoData;
+	int ret_connect = 0;
+	
+	if (NULL != _dataCollector)
+	{
+		delete _dataCollector;
+		_dataCollector = NULL;
 	}
+
+	_dataCollector = new DeviceDataCollector();
+	bool found = false;
+	for (int i = 1; i < 256; i++) {
+		std::ostringstream oss;
+		oss << "COM" << i;
+		//std::cout << oss.str() << std::endl;
+		unsigned int error = _dataCollector->Open(oss.str());
+		printf("error %ud", error);
+		if (error != IO_NO_ERROR)
+		{
+
+			//MessageBox::Show(String::Format("Open communication failed! Hardware Error ( code: 0x{0:X} )", error), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			continue;
+		}
+		error = _dataCollector->SetAcquisitionMode(ACQUISITION);
+
+		if (error != IO_NO_ERROR)
+		{
+			//MessageBox::Show(String::Format("Set acquisition mode failed! Hardware Error ( code: 0x{0:X} )", error), "Error", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			//_btnLink->Checked = false;
+			continue;
+		}
+		break;
+		found = true;
+	}
+	if (!found)
+		return;
+	status = STREAMING;
+	while (lslrunning) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	}
+
+
+	status = CONNECTED;
+
+	if (NULL == _dataCollector)
+		return;
+
+	_dataCollector->SetAcquisitionMode(IDLE);
+
+	_dataCollector->Close();
+
+	status = NOT_CONNECTED;
 }
+
+

@@ -3,6 +3,7 @@
 #include "Recorder.h"
 #include "MyGazeSensor.h"
 #include "EnobioSensor.h"
+#include "ShimmerSensor.h"
 
 namespace SensorLib
 {
@@ -10,6 +11,7 @@ namespace SensorLib
 		sensors.push_back(new EmotivSensor);
 		sensors.push_back(new MyGazeSensor);
 		sensors.push_back(new EnobioSensor);
+		sensors.push_back(new ShimmerSensor);
 		for (size_t i = 0; i < sensors.size(); i++) {
 			sensors[i]->connect();
 		}

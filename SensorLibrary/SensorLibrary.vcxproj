@@ -126,7 +126,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>edk.lib;liblsl32.lib;myGazeAPI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>edk.lib;liblsl32.lib;myGazeAPI.lib;SDK_Shimmer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,6 +153,9 @@
     <ClInclude Include="include\EnobioSensor.h" />
     <ClInclude Include="include\recording.h" />
     <ClInclude Include="include\SensorLibrary.h" />
+    <ClInclude Include="include\sensor\shimmer\DeviceDataCollector.h" />
+    <ClInclude Include="include\sensor\shimmer\SDK_Shimmer.h" />
+    <ClInclude Include="include\ShimmerSensor.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\targetver.h" />
     <ClInclude Include="include\EmotivSensor.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="include\MyGazeSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DeviceDataCollector.cpp" />
     <ClCompile Include="src\EnobioSensor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -197,6 +201,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\ShimmerSensor.cpp" />
     <ClCompile Include="src\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

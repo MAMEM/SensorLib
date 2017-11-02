@@ -45,6 +45,15 @@
     <ClInclude Include="include\EnobioSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\sensor\shimmer\DeviceDataCollector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sensor\shimmer\SDK_Shimmer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShimmerSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SensorLibrary.cpp">
@@ -69,6 +78,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\EnobioSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShimmerSensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DeviceDataCollector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
