@@ -3,6 +3,7 @@
 
 SensorLibrary/include/sensor/emotiv
 SensorLibrary/include/sensor/mygaze
+bfg-1.12.16.jar
 # LIBS
 *.lib
 *.dll
