@@ -8,7 +8,6 @@
 namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
-		sensors.push_back(new EmotivSensor);
 		sensors.push_back(new MyGazeSensor);
 		sensors.push_back(new EnobioSensor);
 		sensors.push_back(new ShimmerSensor);

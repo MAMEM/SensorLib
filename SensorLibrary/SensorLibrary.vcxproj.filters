@@ -33,9 +33,6 @@
     <ClInclude Include="include\recording.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\EmotivSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Recorder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,9 +63,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Sensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\EmotivSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Recorder.cpp">

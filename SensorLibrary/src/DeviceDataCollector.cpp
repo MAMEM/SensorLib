@@ -41,12 +41,8 @@ unsigned int DeviceDataCollector::Open( std::string comPort )
 	std::cout << comPort << std::endl;
 	std::wstring stemp = std::wstring(comPort.begin(), comPort.end());
 	unsigned int error =  Shimmer_Open( stemp.c_str( ), &_handle );
-	std::cout << stemp.c_str() << std::endl;
-	//unsigned int error = Shimmer_Open(L"COM3", &_handle);
-	//std::cout << "Error code" << error << std::endl;
 	if( error == IO_NO_ERROR )
 	{
-		std::cout << "NO ERROR" <<std::endl;
 		Shimmer_SetAcquisitionCallBack( _handle, ( DTACALLBACK ) DeviceDataCollector::ProcData,  this );
 	
 	

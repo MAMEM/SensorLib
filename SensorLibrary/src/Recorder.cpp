@@ -8,7 +8,7 @@ namespace SensorLib {
 	}
 
 	Recorder::~Recorder() {
-
+		delete currentRecording;
 	}
 
 	void Recorder::startRecording(const std::string filename, std::vector<Sensor*> sensors) {
@@ -26,11 +26,11 @@ namespace SensorLib {
 		std::map<std::string, int> syncOptions;
 		std::cout << "recording " << streamsToRecord.size() << " streams" << std::endl;
 		//recording *result = new recording(filename, streamsToRecord);
-		recording *result = new recording(filename, streamsToRecord, watchfor, syncOptions, true);
+		currentRecording = new recording(filename, streamsToRecord, watchfor, syncOptions, true);
 	}
 
 	void Recorder::stopRecording() {
-
+		delete currentRecording;
 	}
 
 	void Recorder::recordessr() {

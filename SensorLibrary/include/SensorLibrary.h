@@ -8,7 +8,6 @@
 #endif  
 #include <stdlib.h>
 #include "Sensor.h"
-#include "EmotivSensor.h"
 #include "EnobioSensor.h"
 
 

@@ -58,10 +58,7 @@ void ShimmerSensor::lsl_worker() {
 	bool found = false;
 	for (int i = 1; i < 256; i++) {
 		std::ostringstream oss;
-		oss << "COM" << i;
-		//std::cout << oss.str() << std::endl;
 		unsigned int error = _dataCollector->Open(oss.str());
-		printf("error %ud", error);
 		if (error != IO_NO_ERROR)
 		{
 

@@ -21,6 +21,8 @@ namespace SensorLib {
 		void startRecording(std::string filename, std::vector<Sensor*> sensors);
 		void stopRecording();
 
+		recording* currentRecording;
+
 
 	private:
 		void recordessr();
