@@ -33,11 +33,9 @@ SensorStatus ShimmerSensor::getStatus() {
 
 void ShimmerSensor::connect() {
 	status = BUSY;
-	std::cout << "connect" << std::endl;
 	lslrunning = true;
 	lsl_thread = new std::thread(&ShimmerSensor::lsl_worker, this);
 
-	std::cout << "SensorStatus: dispatched thread" << std::endl;
 }
 
 void ShimmerSensor::disconnect() {
@@ -56,9 +54,13 @@ void ShimmerSensor::lsl_worker() {
 
 	_dataCollector = new DeviceDataCollector();
 	bool found = false;
+	status = BUSY;
 	for (int i = 1; i < 256; i++) {
 		std::ostringstream oss;
+		oss << "COM" << i;
 		unsigned int error = _dataCollector->Open(oss.str());
+		std::cout << "Trying COM" << i << std::endl;
+		std::cout << error << std::endl;
 		if (error != IO_NO_ERROR)
 		{
 
@@ -73,14 +75,19 @@ void ShimmerSensor::lsl_worker() {
 			//_btnLink->Checked = false;
 			continue;
 		}
-		break;
+		std::cout << "Connected to Shimmer" << std::endl;
 		found = true;
+		break;
+
 	}
-	if (!found)
+	if (!found) {
+		status = ERR;
 		return;
+	}
 	status = STREAMING;
+
 	while (lslrunning) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 
 

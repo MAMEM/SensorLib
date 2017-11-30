@@ -41,15 +41,17 @@ unsigned int DeviceDataCollector::Open( std::string comPort )
 	std::cout << comPort << std::endl;
 	std::wstring stemp = std::wstring(comPort.begin(), comPort.end());
 	unsigned int error =  Shimmer_Open( stemp.c_str( ), &_handle );
+	//unsigned int error = Shimmer_Open(L"COM3", &_handle);
 	if( error == IO_NO_ERROR )
 	{
+
 		Shimmer_SetAcquisitionCallBack( _handle, ( DTACALLBACK ) DeviceDataCollector::ProcData,  this );
 	
 	
-		lsl::stream_info info("Shimmer_" + _comPort,"BIO", Channel_Count,SamplingRate,lsl::cf_float32,"Shimmer_" + _comPort);
+		lsl::stream_info info("Shimmer","BIO", Channel_Count,SamplingRate,lsl::cf_float32,"Shimmer_" + _comPort);
 
 		// add some description fields
-		info.desc().append_child_value("manufacturer", "EBNEURO");
+		info.desc().append_child_value("manufacturer", "Shimmer");
 
 
 		info.desc().append_child("channel")
@@ -82,7 +84,7 @@ unsigned int DeviceDataCollector::SetAcquisitionMode( unsigned int mode )
 
 void __cdecl DeviceDataCollector::ProcData( void *context, const  double acquisitionTime, const float heartRate, const float gsr_value )
 {
-	
+	std::cout << "procdata" << std::endl;
 	((DeviceDataCollector*)context)->_mychunk[ 0 ][ ((DeviceDataCollector*)context)->_index] = (float)heartRate;
 	((DeviceDataCollector*)context)->_mychunk[ 1 ][ ((DeviceDataCollector*)context)->_index] = (float)gsr_value;
 	((DeviceDataCollector*)context)->_index++;
@@ -93,6 +95,7 @@ void __cdecl DeviceDataCollector::ProcData( void *context, const  double acquisi
 					
 		for( int i = 0; i < PacketLSL; i++ )
 		{
+			std::cout << ((DeviceDataCollector*)context)->_mychunk[0][i] << std::endl;
 			chunk[ i ].push_back(((DeviceDataCollector*)context)->_mychunk[ 0 ][ i ] );
 			chunk[ i ].push_back(((DeviceDataCollector*)context)->_mychunk[ 1 ][ i ] );
 		}
