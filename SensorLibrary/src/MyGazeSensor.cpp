@@ -46,6 +46,33 @@ void MyGazeSensor::lsl_worker() {
 	lsl::stream_info streamInfo(name, "EyeTracker", numChannels, samplingRate, lsl::cf_float32, "mysource333645");
 	//set sample callback
 	streamInfo.desc().append_child_value("manufacturer", "Visual Interaction GmbH");
+
+	lsl::xml_element time = streamInfo.desc().append_child("event_synchronization");
+	//unix timestamp in seconds;
+	std::ostringstream unixtimestamp;
+	unixtimestamp.precision(15);
+	unixtimestamp << std::time(0);
+	//unix timestamp in milliseconds
+	std::chrono::milliseconds ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+		std::chrono::system_clock::now().time_since_epoch()
+		);
+	std::ostringstream unixtimestampms;
+	unixtimestampms.precision(15);
+	unixtimestampms << ms.count();
+	//lsl local clock
+	std::ostringstream lslclock;
+	lslclock.precision(15);
+	lslclock << lsl_local_clock();
+	//offset in milliseconds
+	std::ostringstream timeoffset;
+	timeoffset.precision(15);
+	timeoffset << (ms.count() - lsl_local_clock());
+	time.append_child_value("unixtimestamp", unixtimestamp.str());
+	time.append_child_value("unixtimestmapms", unixtimestampms.str());
+	time.append_child_value("lslclock", lslclock.str());
+	time.append_child_value("streamoffset", timeoffset.str());
+
+
 	lsl::xml_element channels = streamInfo.desc().append_child("channels");
 	channels.append_child("channel")
 		.append_child_value("label", "gazeX")

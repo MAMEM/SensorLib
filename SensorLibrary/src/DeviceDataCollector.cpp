@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include <sensor/shimmer/DeviceDataCollector.h>
 #include <iostream>
-
+#include <sstream>
+#include <ctime>
+#include <chrono>
 
 
 #pragma unmanaged
@@ -38,9 +40,15 @@ DeviceDataCollector::~DeviceDataCollector(void)
 unsigned int DeviceDataCollector::Open( std::string comPort )
 {
 	_comPort = comPort;
-	std::cout << comPort << std::endl;
+	//std::cout << comPort << std::endl;
 	std::wstring stemp = std::wstring(comPort.begin(), comPort.end());
-	unsigned int error =  Shimmer_Open( stemp.c_str( ), &_handle );
+	unsigned int error;
+	try {
+		error = Shimmer_Open(stemp.c_str(), &_handle);
+	}
+	catch(...){
+		error = 0xC00B0000;
+	}
 	//unsigned int error = Shimmer_Open(L"COM3", &_handle);
 	if( error == IO_NO_ERROR )
 	{
@@ -50,6 +58,30 @@ unsigned int DeviceDataCollector::Open( std::string comPort )
 	
 		lsl::stream_info info("Shimmer","BIO", Channel_Count,SamplingRate,lsl::cf_float32,"Shimmer_" + _comPort);
 
+		lsl::xml_element time = info.desc().append_child("event_synchronization");
+		//unix timestamp in seconds;
+		std::ostringstream unixtimestamp;
+		unixtimestamp.precision(15);
+		unixtimestamp << std::time(0);
+		//unix timestamp in milliseconds
+		std::chrono::milliseconds ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+			std::chrono::system_clock::now().time_since_epoch()
+			);
+		std::ostringstream unixtimestampms;
+		unixtimestampms.precision(15);
+		unixtimestampms << ms.count();
+		//lsl local clock
+		std::ostringstream lslclock;
+		lslclock.precision(15);
+		lslclock << lsl::lsl_local_clock();
+		//offset in milliseconds
+		std::ostringstream timeoffset;
+		timeoffset.precision(15);
+		timeoffset << (ms.count() - lsl::lsl_local_clock());
+		time.append_child_value("unixtimestamp", unixtimestamp.str());
+		time.append_child_value("unixtimestmapms", unixtimestampms.str());
+		time.append_child_value("lslclock", lslclock.str());
+		time.append_child_value("streamoffset", timeoffset.str());
 		// add some description fields
 		info.desc().append_child_value("manufacturer", "Shimmer");
 

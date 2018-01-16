@@ -1,5 +1,7 @@
 #include "stdafx.h"  
 #include <iostream>  
+#include <ostream>
+#include <sstream>
 #include <ctime>
 #include "SensorLibrary.h"
 using namespace std;
@@ -13,17 +15,9 @@ int main()
 	std::time_t t = std::time(0);
 	std::ostringstream oss;
 	oss << t << ".xdf";
-	lib->startRecording(oss.str());
+	//lib->startRecording(oss.str());
+	lib->startRecording("C:/lalakis/test.xdf");
 	std::cout << "Start recording 1" << std::endl;
-	system("pause");
-	lib->stopRecording();
-	system("pause");
-	t = std::time(0);
-	oss.str("");
-	oss.clear();
-	oss << t << ".xdf";
-	lib->startRecording(oss.str());
-	std::cout << "Start recording 2" << std::endl;
 	system("pause");
 	lib->stopRecording();
 	system("pause");

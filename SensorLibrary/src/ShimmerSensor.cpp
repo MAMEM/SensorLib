@@ -55,12 +55,12 @@ void ShimmerSensor::lsl_worker() {
 	_dataCollector = new DeviceDataCollector();
 	bool found = false;
 	status = BUSY;
-	for (int i = 1; i < 256; i++) {
+	for (int i = 1; i < 10; i++) {
 		std::ostringstream oss;
 		oss << "COM" << i;
 		unsigned int error = _dataCollector->Open(oss.str());
-		std::cout << "Trying COM" << i << std::endl;
-		std::cout << error << std::endl;
+		//std::cout << "Trying COM" << i << std::endl;
+		//std::cout << error << std::endl;
 		if (error != IO_NO_ERROR)
 		{
 

@@ -11,6 +11,9 @@
 #include <iostream>
 #include <algorithm>
 #include <memory>
+#include <sstream>
+#include <ctime>
+#include <chrono>
 
 namespace SensorLib {
 	//DEBUG this

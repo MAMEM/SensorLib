@@ -8,9 +8,6 @@
 #endif  
 #include <stdlib.h>
 #include "Sensor.h"
-#include "EnobioSensor.h"
-
-
 
 namespace SensorLib
 {

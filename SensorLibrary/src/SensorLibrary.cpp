@@ -4,10 +4,10 @@
 #include "MyGazeSensor.h"
 #include "EnobioSensor.h"
 #include "ShimmerSensor.h"
-
 namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
+
 		sensors.push_back(new MyGazeSensor);
 		sensors.push_back(new EnobioSensor);
 		sensors.push_back(new ShimmerSensor);
@@ -21,6 +21,7 @@ namespace SensorLib
 		for (size_t i = 0; i < sensors.size(); i++) {
 			delete sensors[i];
 		}
+		delete recorder;
 	}
 
 	void SensorLibrary::printStatus() {
