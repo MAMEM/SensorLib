@@ -11,7 +11,7 @@
 namespace SensorLib
 {
 	enum SensorDevice { EMOTIV , MYGAZE, SHIMMER};
-	enum SensorType {EEG, ET, GSR};
+	enum SensorType {EEG, ET, GSR, MARKERS};
 	enum SensorStatus {ERR, WARNING, NOT_CONNECTED, BUSY, CONNECTED, STREAMING};
 	class Sensor {
 	public:
