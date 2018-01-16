@@ -30,9 +30,17 @@ namespace SensorLib
 		}
 	}
 
-	void SensorLibrary::startRecording(std::string filename)
+	void SensorLibrary::startRecording()
 	{
-		recorder->startRecording(filename, sensors);
+		std::wstring outputFolder = L"../data";
+		if (CreateDirectory(outputFolder.c_str(), NULL) ||
+			ERROR_ALREADY_EXISTS == GetLastError())
+		{
+			std::time_t t = std::time(0);
+			std::ostringstream oss;
+			oss << "../data/" << t << ".xdf";
+			recorder->startRecording(oss.str(), sensors);
+		}
 	}
 
 	void SensorLibrary::stopRecording() {

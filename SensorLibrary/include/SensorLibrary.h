@@ -22,7 +22,7 @@ namespace SensorLib
 		//SENSORLIBRARY_API int* getStatus(void);
 		SENSORLIBRARY_API void printStatus(void);
 
-		SENSORLIBRARY_API void startRecording(std::string filename);
+		SENSORLIBRARY_API void startRecording(void);
 		SENSORLIBRARY_API void stopRecording(void);
 
 		Recorder *recorder;

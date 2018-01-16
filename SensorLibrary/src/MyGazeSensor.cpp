@@ -35,11 +35,13 @@ void MyGazeSensor::disconnect() {
 void MyGazeSensor::lsl_worker() {
 	SystemInfoStruct systemInfoData;
 	int ret_connect = 0;
+	std::cout << "trying to connect with myGaze" << std::endl;
 	while (ret_connect != RET_SUCCESS)
 	{
 		// Connect to myGaze
 		ret_connect = iV_Connect();
 	}
+	std::cout << "connected with mygaze" << std::endl;
 	status = CONNECTED;
 	iV_GetSystemInfo(&systemInfoData);
 	samplingRate = systemInfoData.samplerate;
