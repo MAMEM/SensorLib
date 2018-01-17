@@ -37,14 +37,14 @@ DeviceDataCollector::~DeviceDataCollector(void)
 		_handle = NULL;
 	}
 }
-unsigned int DeviceDataCollector::Open( std::string comPort )
+unsigned int DeviceDataCollector::Open( std::wstring comPort )
 {
-	_comPort = comPort;
+	//_comPort = comPort;
 	//std::cout << comPort << std::endl;
-	std::wstring stemp = std::wstring(comPort.begin(), comPort.end());
+	//std::wstring stemp = std::wstring(comPort.begin(), comPort.end());
 	unsigned int error;
 	try {
-		error = Shimmer_Open(stemp.c_str(), &_handle);
+		error = Shimmer_Open(comPort.c_str(), &_handle);
 	}
 	catch(...){
 		error = 0xC00B0000;

@@ -5,6 +5,8 @@
 #include <tchar.h>
 #include <sstream>
 
+#include "enumser.h"
+
 #define MAX_KEY_LENGTH 255
 #define MAX_VALUE_NAME 16383
 using namespace SensorLib;
@@ -35,11 +37,42 @@ void ShimmerSensor::connect() {
 	status = BUSY;
 	lslrunning = true;
 	lsl_thread = new std::thread(&ShimmerSensor::lsl_worker, this);
+	std::cout << "Shimmer: Searching for stream" << std::endl;
 
 }
 
 void ShimmerSensor::disconnect() {
 	lslrunning = false;
+}
+
+std::vector<std::wstring> ShimmerSensor::getSerialPorts() {
+	std::vector<UINT> portList;
+	std::vector<std::wstring> namesList;
+	HRESULT hr = CoInitialize(nullptr);
+	if (FAILED(hr))
+	{
+		std::cout << "Shimmer: error getting serial ports" << std::endl;
+		return namesList;
+	}
+	hr = CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
+	if (FAILED(hr))
+	{
+		CoUninitialize();
+		std::cout << "Shimmer: error getting serial ports 2" << std::endl;
+		std::cout << GetLastError() << std::endl;
+		return namesList;
+	}
+	CEnumerateSerial::CPortsArray ports;
+	CEnumerateSerial::CNamesArray names;
+	if (CEnumerateSerial::UsingRegistry(names))
+	{
+		for (size_t i = 0; i < names.size(); i++) {
+			namesList.push_back(names[i].c_str());
+		}
+	}
+	std::cout << "Shimmer: namesList size = " << namesList.size() << std::endl;
+	CoUninitialize();
+	return namesList;
 }
 
 void ShimmerSensor::lsl_worker() {
@@ -55,11 +88,14 @@ void ShimmerSensor::lsl_worker() {
 	_dataCollector = new DeviceDataCollector();
 	bool found = false;
 	status = BUSY;
-	for (int i = 1; i < 10; i++) {
-		std::ostringstream oss;
-		oss << "COM" << i;
-		unsigned int error = _dataCollector->Open(oss.str());
-		//std::cout << "Trying COM" << i << std::endl;
+searchShimmer:
+	std::vector<std::wstring> ports = getSerialPorts();
+	std::cout << "Shimmer: serial ports size =  " << ports.size() << std::endl;
+	for (int i = 0; i < ports.size(); i++) {
+		//std::ostringstream oss;
+		//oss << "COM" << ports[i];
+		unsigned int error = _dataCollector->Open(ports[i]);
+		std::cout << "Trying COM" << i << std::endl;
 		//std::cout << error << std::endl;
 		if (error != IO_NO_ERROR)
 		{
@@ -75,15 +111,19 @@ void ShimmerSensor::lsl_worker() {
 			//_btnLink->Checked = false;
 			continue;
 		}
-		std::cout << "Connected to Shimmer" << std::endl;
+
 		found = true;
 		break;
 
 	}
 	if (!found) {
 		status = ERR;
+		std::cout << "Shimmer: Not Connected" << std::endl;
+		Sleep(5000);
+		goto searchShimmer;
 		return;
 	}
+	std::cout << "Shimmer: Connected" << std::endl;
 	status = STREAMING;
 
 	while (lslrunning) {
@@ -99,7 +139,7 @@ void ShimmerSensor::lsl_worker() {
 	_dataCollector->SetAcquisitionMode(IDLE);
 
 	_dataCollector->Close();
-
+	std::cout << "Shimmer: Disconnected" << std::endl;
 	status = NOT_CONNECTED;
 }
 

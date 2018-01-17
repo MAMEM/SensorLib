@@ -20,10 +20,9 @@ SensorStatus EnobioSensor::getStatus() {
 
 __declspec(dllexport) void EnobioSensor::connect() {
 	status = BUSY;
-	std::cout << "connect" << std::endl;
 	lslrunning = true;
 	lsl_thread = new std::thread(&EnobioSensor::lsl_worker, this);
-	std::cout << "dispatched thread" << std::endl;
+	std::cout << "Enobio: Searching for stream.." << std::endl;
 }
 
 __declspec(dllexport) void  EnobioSensor::disconnect() {
@@ -33,16 +32,19 @@ __declspec(dllexport) void  EnobioSensor::disconnect() {
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void EnobioSensor::lsl_worker() {
 	while (lslrunning) {
-		std::vector<lsl::stream_info> results = lsl::resolve_stream("type", "EEG");
+		std::vector<lsl::stream_info> results = lsl::resolve_stream("type", "EEG",1,5);
+		status = NOT_CONNECTED;
 		for (size_t i = 0; i < results.size(); i++) {
 			if (!strcmp(results[i].name().c_str(), "enobio")) {
 				status = STREAMING;
-				//std::cout << "status:Streaming" << std::endl;
+				std::cout << "Enobio: Streaming" << std::endl;
 			}
 			else {
 				status = NOT_CONNECTED;
-				//std::cout << "status:NotConnected" << std::endl;
 			}
+		}
+		if (status == NOT_CONNECTED) {
+			std::cout << "Enobio: Not Connected" << std::endl;
 		}
 		Sleep(10000);
 		//lsl::stream_inlet inlet(results[0]);

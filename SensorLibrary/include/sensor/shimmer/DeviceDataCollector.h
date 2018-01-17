@@ -26,7 +26,7 @@ public:
 	/// <summary>
 	/// Open hardware communication
 	/// </summary>
-	unsigned int Open( std::string ipaddress );
+	unsigned int Open( std::wstring ipaddress );
 	/// <summary>
 	/// Close comminucation.
 	/// </summary>

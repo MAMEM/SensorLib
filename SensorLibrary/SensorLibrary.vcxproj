@@ -231,6 +231,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\enumser.h" />
     <ClInclude Include="include\GazeOutputSensor.h" />
     <ClInclude Include="include\EnobioSensor.h" />
     <ClInclude Include="include\recording.h" />
@@ -245,6 +246,7 @@
     <ClInclude Include="include\MyGazeSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\enumser.cpp" />
     <ClCompile Include="src\GazeOutputSensor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>

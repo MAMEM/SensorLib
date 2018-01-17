@@ -25,7 +25,7 @@ void MyGazeSensor::connect() {
 	std::cout << "connect" << std::endl;
 	lslrunning = true;
 	lsl_thread = new std::thread(&MyGazeSensor::lsl_worker, this);
-	std::cout << "MyGaze: dispatched thread" << std::endl;
+	std::cout << "MyGaze: seaching for stream" << std::endl;
 }
 
 void MyGazeSensor::disconnect() {
@@ -35,13 +35,12 @@ void MyGazeSensor::disconnect() {
 void MyGazeSensor::lsl_worker() {
 	SystemInfoStruct systemInfoData;
 	int ret_connect = 0;
-	std::cout << "trying to connect with myGaze" << std::endl;
 	while (ret_connect != RET_SUCCESS)
 	{
 		// Connect to myGaze
 		ret_connect = iV_Connect();
 	}
-	std::cout << "connected with mygaze" << std::endl;
+	std::cout << "MyGaze: connected" << std::endl;
 	status = CONNECTED;
 	iV_GetSystemInfo(&systemInfoData);
 	samplingRate = systemInfoData.samplerate;
@@ -130,6 +129,7 @@ void MyGazeSensor::lsl_worker() {
 	iV_SetSampleCallback(NULL);
 	status = CONNECTED;
 	iV_Disconnect();
+	std::cout << "MyGaze: disconnected" << std::endl;
 	status = NOT_CONNECTED;
 }
 

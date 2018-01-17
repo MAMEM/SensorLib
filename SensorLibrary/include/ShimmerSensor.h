@@ -32,6 +32,7 @@ namespace SensorLib
 	protected:
 		virtual void lsl_worker();
 		static lsl::stream_outlet* upOutlet;
+		std::vector<std::wstring> getSerialPorts(void);
 		void QueryKey(HKEY hKey);
 
 	};
