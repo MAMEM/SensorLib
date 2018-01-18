@@ -116,7 +116,7 @@ unsigned int DeviceDataCollector::SetAcquisitionMode( unsigned int mode )
 
 void __cdecl DeviceDataCollector::ProcData( void *context, const  double acquisitionTime, const float heartRate, const float gsr_value )
 {
-	std::cout << "procdata" << std::endl;
+	//std::cout << "procdata" << std::endl;
 	((DeviceDataCollector*)context)->_mychunk[ 0 ][ ((DeviceDataCollector*)context)->_index] = (float)heartRate;
 	((DeviceDataCollector*)context)->_mychunk[ 1 ][ ((DeviceDataCollector*)context)->_index] = (float)gsr_value;
 	((DeviceDataCollector*)context)->_index++;
@@ -127,7 +127,7 @@ void __cdecl DeviceDataCollector::ProcData( void *context, const  double acquisi
 					
 		for( int i = 0; i < PacketLSL; i++ )
 		{
-			std::cout << ((DeviceDataCollector*)context)->_mychunk[0][i] << std::endl;
+		//	std::cout << ((DeviceDataCollector*)context)->_mychunk[0][i] << std::endl;
 			chunk[ i ].push_back(((DeviceDataCollector*)context)->_mychunk[ 0 ][ i ] );
 			chunk[ i ].push_back(((DeviceDataCollector*)context)->_mychunk[ 1 ][ i ] );
 		}
