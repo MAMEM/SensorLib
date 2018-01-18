@@ -1,7 +1,8 @@
 #include "stdafx.h"  
 #include "SensorLibrary.h"  
 #include "Recorder.h"
-#include "MyGazeSensor.h"
+//#include "MyGazeSensor.h"
+#include "MyGazeGTWSensor.h"
 #include "EnobioSensor.h"
 #include "ShimmerSensor.h"
 #include "GazeOutputSensor.h"
@@ -9,7 +10,7 @@ namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
 
-		sensors.push_back(new MyGazeSensor);
+		sensors.push_back(new MyGazeGTWSensor);
 		sensors.push_back(new EnobioSensor);
 		sensors.push_back(new ShimmerSensor);
 		sensors.push_back(new GazeOutputSensor);

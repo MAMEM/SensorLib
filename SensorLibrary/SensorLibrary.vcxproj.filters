@@ -57,6 +57,9 @@
     <ClInclude Include="include\enumser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\MyGazeGTWSensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SensorLibrary.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\enumser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGazeGTWSensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

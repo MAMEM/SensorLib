@@ -244,8 +244,12 @@
     <ClInclude Include="include\Sensor.h" />
     <ClInclude Include="include\Recorder.h" />
     <ClInclude Include="include\MyGazeSensor.h" />
+    <ClInclude Include="include\MyGazeGTWSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\MyGazeGTWSensor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\enumser.cpp" />
     <ClCompile Include="src\GazeOutputSensor.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

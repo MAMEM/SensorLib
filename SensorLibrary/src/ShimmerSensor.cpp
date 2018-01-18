@@ -88,8 +88,12 @@ void ShimmerSensor::lsl_worker() {
 	_dataCollector = new DeviceDataCollector();
 	bool found = false;
 	status = BUSY;
-searchShimmer:
 	std::vector<std::wstring> ports = getSerialPorts();
+searchShimmer:
+	if (ports.size() == 0) {
+		ports = getSerialPorts();
+	}
+	
 	std::cout << "Shimmer: serial ports size =  " << ports.size() << std::endl;
 	for (int i = 0; i < ports.size(); i++) {
 		//std::ostringstream oss;
