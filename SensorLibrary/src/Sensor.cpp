@@ -3,8 +3,13 @@
 #include <stdlib.h>
 using namespace SensorLib;
 Sensor::Sensor(void) {
+	shouldRecord = false;
+	shouldShutDown = false;
 }
 Sensor::~Sensor(void) {
+	if (currentRecording) {
+		delete currentRecording;
+	}
 }
 
 lsl::stream_info Sensor::getStreamInfo() {

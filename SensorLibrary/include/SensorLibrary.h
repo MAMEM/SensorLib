@@ -7,6 +7,7 @@
 #define SENSORLIBRARY_API __declspec(dllimport)   
 #endif  
 #include <stdlib.h>
+#include <memory>
 #include "Sensor.h"
 
 namespace SensorLib
@@ -25,7 +26,9 @@ namespace SensorLib
 		SENSORLIBRARY_API void startRecording(void);
 		SENSORLIBRARY_API void stopRecording(void);
 
-		Recorder *recorder;
+		SENSORLIBRARY_API void shutdownSensors(void);
+
+		std::shared_ptr<Recorder> recorder;
 	private:
 		std::vector<Sensor*> sensors;
 	};

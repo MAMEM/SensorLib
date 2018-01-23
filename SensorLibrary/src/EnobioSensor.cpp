@@ -1,5 +1,5 @@
 #include "EnobioSensor.h"
-//#define EPOC__
+
 using namespace SensorLib;
 __declspec(dllexport) EnobioSensor::EnobioSensor(void) {
 	type = EEG;
@@ -32,21 +32,45 @@ __declspec(dllexport) void  EnobioSensor::disconnect() {
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void EnobioSensor::lsl_worker() {
 	while (lslrunning) {
+		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("type", "EEG",1,5);
 		status = NOT_CONNECTED;
 		for (size_t i = 0; i < results.size(); i++) {
 			if (!strcmp(results[i].name().c_str(), "enobio")) {
+				std::cout << "Enobio: Connected" << std::endl;
 				status = STREAMING;
-				std::cout << "Enobio: Streaming" << std::endl;
-			}
-			else {
-				status = NOT_CONNECTED;
+				if (!currentRecording && shouldRecord) {
+					std::cout << "Enobio: Starting recording" << std::endl;
+					currentRecording = recorder->startRecording(this);
+					status = RECORDING;
+				}
+				else if (currentRecording && !shouldRecord) {
+					status = STREAMING;
+					std::cout << "Enobio: Stopping recording" << std::endl;
+					delete currentRecording;
+					currentRecording = NULL;
+				}
+				else if (currentRecording && shouldRecord) {
+					std::cout << "Enobio: Recording" << std::endl;
+					status = RECORDING;
+				}
+				break;
 			}
 		}
 		if (status == NOT_CONNECTED) {
-			std::cout << "Enobio: Not Connected" << std::endl;
+			std::cout << "Enobio: Stream does not exist" << std::endl;
+			if (currentRecording) {
+				std::cout << "Enobio: Stopping recording since stream ceased to exist" << std::endl;
+				delete currentRecording;
+				currentRecording = NULL;
+			}
 		}
-		Sleep(10000);
-		//lsl::stream_inlet inlet(results[0]);
+	}
+	status = NOT_CONNECTED;
+	std::cout << "Enobio: Shutting down.." << std::endl;
+	if (currentRecording) {
+		std::cout << "Enobio: Stopping recording before shutting down" << std::endl;
+		delete currentRecording;
+		currentRecording = NULL;
 	}
 }

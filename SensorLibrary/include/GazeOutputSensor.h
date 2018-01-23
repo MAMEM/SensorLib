@@ -13,6 +13,7 @@
 #include <stdexcept>
 #include <Windows.h>
 #include <string>
+#include "Recorder.h"
 
 namespace SensorLib {
 	//DEBUG this

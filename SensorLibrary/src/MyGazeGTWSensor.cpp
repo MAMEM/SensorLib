@@ -2,7 +2,7 @@
 
 using namespace SensorLib;
 __declspec(dllexport) MyGazeGTWSensor::MyGazeGTWSensor(void) {
-	type = MARKERS;
+	type = ET;
 	name = "myGazeLSL";
 	status = NOT_CONNECTED;
 	lslrunning = false;
@@ -32,21 +32,45 @@ __declspec(dllexport) void  MyGazeGTWSensor::disconnect() {
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void MyGazeGTWSensor::lsl_worker() {
 	while (lslrunning) {
+		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("name", "myGazeLSL", 1, 5);
 		status = NOT_CONNECTED;
 		for (size_t i = 0; i < results.size(); i++) {
 			if (!strcmp(results[i].name().c_str(), "myGazeLSL")) {
-				std::cout << "MyGazeGTW: Streaming" << std::endl;
+				std::cout << "MyGazeGTW: Connected" << std::endl;
 				status = STREAMING;
-			}
-			else {
-				status = NOT_CONNECTED;
+				if (!currentRecording && shouldRecord) {
+					std::cout << "MyGazeGTW: Starting recording" << std::endl;
+					currentRecording = recorder->startRecording(this);
+					status = RECORDING;
+				}
+				else if(currentRecording && !shouldRecord){
+					status = STREAMING;
+					std::cout << "MyGazeGTW: Stopping recording" << std::endl;
+					delete currentRecording;
+					currentRecording = NULL;
+				}
+				else if (currentRecording && shouldRecord) {
+					std::cout << "MyGazeGTW: Recording" << std::endl;
+					status = RECORDING;
+				}
+				break;
 			}
 		}
-		Sleep(10000);
-		if (status == NOT_CONNECTED) {
-			std::cout << "MyGazeGTW: Not connected" << std::endl;
+		if(status == NOT_CONNECTED){
+			std::cout << "MyGazeGTW: Stream does not exist" << std::endl;
+			if (currentRecording) {
+				std::cout << "MyGazeGTW: Stopping recording since stream ceased to exist" << std::endl;
+				delete currentRecording;
+				currentRecording = NULL;
+			}
 		}
-		//lsl::stream_inlet inlet(results[0]);
+	}
+	status = NOT_CONNECTED;
+	std::cout << "MyGazeGTW: Shutting down.." << std::endl;
+	if (currentRecording) {
+		std::cout << "MyGazeGTW: Stopping recording before shutting down" << std::endl;
+		delete currentRecording;
+		currentRecording = NULL;
 	}
 }

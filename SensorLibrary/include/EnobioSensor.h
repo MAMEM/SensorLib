@@ -11,6 +11,8 @@
 #include <stdexcept>
 #include <Windows.h>
 #include <string>
+#include "Recorder.h"
+
 namespace SensorLib {
 	class EnobioSensor : public Sensor {
 	public:

@@ -14,17 +14,20 @@ namespace SensorLib
 		sensors.push_back(new EnobioSensor);
 		sensors.push_back(new ShimmerSensor);
 		sensors.push_back(new GazeOutputSensor);
+		recorder = std::shared_ptr<Recorder>(new Recorder());
 		for (size_t i = 0; i < sensors.size(); i++) {
 			sensors[i]->connect();
+			sensors[i]->recorder = recorder;
+			sensors[i]->shouldRecord = true;
 		}
-		recorder = new Recorder();
+		
 	}
 
 	SensorLibrary::~SensorLibrary(void) {
 		for (size_t i = 0; i < sensors.size(); i++) {
 			delete sensors[i];
 		}
-		delete recorder;
+		
 	}
 
 	void SensorLibrary::printStatus() {
@@ -35,6 +38,7 @@ namespace SensorLib
 
 	void SensorLibrary::startRecording()
 	{
+		/*
 		std::wstring outputFolder = L"../data";
 		if (CreateDirectory(outputFolder.c_str(), NULL) ||
 			ERROR_ALREADY_EXISTS == GetLastError())
@@ -42,11 +46,23 @@ namespace SensorLib
 			std::time_t t = std::time(0);
 			std::ostringstream oss;
 			oss << "../data/" << t << ".xdf";
-			recorder->startRecording(oss.str(), sensors);
+			//actual filename generated afterwards
+//			recorder->startRecording(oss.str(), sensors);
 		}
+		*/
 	}
 
 	void SensorLibrary::stopRecording() {
-		recorder->stopRecording();
+		for (int i = 0; i < sensors.size(); i++) {
+			sensors[i]->shouldRecord = false;
+		}
+//		recorder->stopRecording();
+	}
+
+	void SensorLibrary::shutdownSensors() {
+		for (int i = 0; i < sensors.size(); i++) {
+			std::cout << "SensorLibrary: Shutting down the sensors" << std::endl;
+			sensors[i]->shouldShutDown = true;
+		}
 	}
 }

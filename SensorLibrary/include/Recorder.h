@@ -9,19 +9,21 @@
 #include "recording.h"
 #include "SensorLibrary.h"
 #include <boost/algorithm/algorithm.hpp>
+#include <vector>
+#include <sstream>
 
 
 namespace SensorLib {
-	enum RecorderStatus {NOT_RECORDING, RECORDING};
+	//enum RecorderStatus {NOT_RECORDING, RECORDING};
 	class Recorder {
 	public:
 		Recorder();
 		~Recorder();
 
-		void startRecording(std::string filename, std::vector<Sensor*> sensors);
+		recording* startRecording(Sensor* sensors);
 		void stopRecording();
 
-		recording* currentRecording;
+		std::vector<recording*> currentRecordings;
 
 
 	private:
@@ -29,7 +31,6 @@ namespace SensorLib {
 
 		std::string filename;
 		std::atomic<bool> runrecording;
-		std::atomic<RecorderStatus> status;
 	};
 }
 #endif

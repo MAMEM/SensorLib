@@ -12,6 +12,8 @@ int main()
 	system("pause");
 	lib->printStatus();
 	system("pause");
+	lib->stopRecording();
+	/*
 	std::time_t t = std::time(0);
 	std::ostringstream oss;
 	oss << t << ".xdf";
@@ -19,6 +21,12 @@ int main()
 	std::cout << "Start recording 1" << std::endl;
 	system("pause");
 	lib->stopRecording();
+	system("pause");
+	lib->startRecording();
+	system("pause");
+	lib->stopRecording();
+	system("pause");
+	*/
 	system("pause");
 	return 0;
 }

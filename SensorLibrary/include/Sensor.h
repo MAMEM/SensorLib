@@ -7,12 +7,15 @@
 #include <atomic>
 #include "lsl_c.h"
 #include "lsl_cpp.h"
+#include <memory>
+#include "recording.h"
 
 namespace SensorLib
 {
 	enum SensorDevice { EMOTIV , MYGAZE, SHIMMER};
 	enum SensorType {EEG, ET, GSR, MARKERS};
-	enum SensorStatus {ERR, WARNING, NOT_CONNECTED, BUSY, CONNECTED, STREAMING};
+	enum SensorStatus {ERR, WARNING, NOT_CONNECTED, BUSY, CONNECTED, STREAMING, RECORDING};
+	class Recorder;
 	class Sensor {
 	public:
 		Sensor();
@@ -29,6 +32,10 @@ namespace SensorLib
 		std::string name;
 		int numChannels;
 		int samplingRate;
+		std::shared_ptr<Recorder> recorder;
+		recording* currentRecording;
+		bool shouldRecord;
+		bool shouldShutDown;
 	protected:
 		SensorType type;
 		SensorDevice device;

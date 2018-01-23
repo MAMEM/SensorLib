@@ -210,9 +210,12 @@ public:
 
 		// open file stream
 		std::cout << "Opening file " << filename << " ... ";
+		std::cout << "1" << std::endl;
 		if (boost::iends_with(filename,".xdfz"))
 			file_.push(boost::iostreams::zlib_compressor());
+		std::cout << "2" << std::endl;
 		file_.push(boost::iostreams::file_descriptor_sink(filename,std::ios::binary | std::ios::trunc));
+		std::cout << "3" << std::endl;
 		std::cout << "done." << std::endl;
 		// [MagicCode]
 		file_.rdbuf()->sputn("XDF:",4);

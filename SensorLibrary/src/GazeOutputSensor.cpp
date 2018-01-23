@@ -31,22 +31,46 @@ __declspec(dllexport) void  GazeOutputSensor::disconnect() {
 
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void GazeOutputSensor::lsl_worker() {
-	while (lslrunning) {
+	while (!shouldShutDown) {
+		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("name", "GazeTheWebOutput",1,5);
 		status = NOT_CONNECTED;
 		for (size_t i = 0; i < results.size(); i++) {
 			if (!strcmp(results[i].name().c_str(), "GazeTheWebOutput")) {
-				std::cout << "GazeTheWebOutput: Streaming" << std::endl;
+				std::cout << "GazeTheWebOutput: Connected" << std::endl;
 				status = STREAMING;
-			}
-			else {
-				status = NOT_CONNECTED;
+				if (!currentRecording && shouldRecord) {
+					std::cout << "GazeTheWebOutput: Starting recording" << std::endl;
+					currentRecording = recorder->startRecording(this);
+					status = RECORDING;
+				}
+				else if (currentRecording && !shouldRecord) {
+					status = STREAMING;
+					std::cout << "GazeTheWebOutput: Stopping recording" << std::endl;
+					delete currentRecording;
+					currentRecording = NULL;
+				}
+				else if (currentRecording && shouldRecord) {
+					std::cout << "GazeTheWebOutput: Recording" << std::endl;
+					status = RECORDING;
+				}
+				break;
 			}
 		}
-		Sleep(10000);
 		if (status == NOT_CONNECTED) {
-		std::cout << "GazeTheWebOutput: Not connected" << std::endl;
+			std::cout << "MyGazeGTW: Stream does not exist" << std::endl;
+			if (currentRecording) {
+				std::cout << "GazeOutputSensor: Stopping recording since stream ceased to exist" << std::endl;
+				delete currentRecording;
+				currentRecording = NULL;
+			}
 		}
-		//lsl::stream_inlet inlet(results[0]);
+	}
+	status = NOT_CONNECTED;
+	std::cout << "GazeOutputSensor: Shutting down.." << std::endl;
+	if (currentRecording) {
+		std::cout << "GazeOutputSensor: Stopping recording before shutting down" << std::endl;
+		currentRecording = NULL;
+		delete currentRecording;
 	}
 }
