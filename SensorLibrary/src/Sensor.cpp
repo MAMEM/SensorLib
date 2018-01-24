@@ -1,6 +1,8 @@
 #pragma once
 #include "Sensor.h"
 #include <stdlib.h>
+#include "SensorLibrary.h"
+
 using namespace SensorLib;
 Sensor::Sensor(void) {
 	shouldRecord = false;
@@ -12,6 +14,24 @@ Sensor::~Sensor(void) {
 	}
 }
 
+void Sensor::statusUpdate(SensorStatus statusUpdate) {
+	if (status == statusUpdate)
+		return;
+	status = statusUpdate;
+	if (sLib) {
+		sLib->sensorUpdate(this, statusUpdate);
+	}
+}
+
+void Sensor::registerStatusUpdateCallback(SensorLibrary * lib) {
+	sLib = lib;
+}
+
+void Sensor::unregisterStatusUpdateCallback() {
+	if (sLib) {
+		sLib = NULL;
+	}
+}
 lsl::stream_info Sensor::getStreamInfo() {
 	std::vector<lsl::stream_info> streaminfos;
 	if (!strcmp(name.c_str(), "enobio")) {

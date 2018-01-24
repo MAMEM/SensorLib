@@ -25,6 +25,11 @@ namespace SensorLib {
 		__declspec(dllexport) virtual SensorStatus getStatus();
 		__declspec(dllexport) virtual void connect();
 		__declspec(dllexport) virtual void disconnect();
+		/*
+		void statusUpdate(SensorStatus statusUpdate);
+		void registerStatusUpdateCallback(SensorLibrary * lib);
+		void unregisterStatusUpdateCallback();
+		*/
 		//std::unique_ptr<lsl::stream_outlet> MyGazeSensor::myGazeOutlet;
 	protected:
 		virtual void lsl_worker();

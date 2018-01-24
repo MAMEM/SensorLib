@@ -31,28 +31,34 @@ __declspec(dllexport) void  GazeOutputSensor::disconnect() {
 
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void GazeOutputSensor::lsl_worker() {
+	SensorStatus tempStatus;
 	while (!shouldShutDown) {
 		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("name", "GazeTheWebOutput",1,5);
-		status = NOT_CONNECTED;
+		tempStatus = NOT_CONNECTED;
 		for (size_t i = 0; i < results.size(); i++) {
 			if (!strcmp(results[i].name().c_str(), "GazeTheWebOutput")) {
-				std::cout << "GazeTheWebOutput: Connected" << std::endl;
-				status = STREAMING;
 				if (!currentRecording && shouldRecord) {
 					std::cout << "GazeTheWebOutput: Starting recording" << std::endl;
 					currentRecording = recorder->startRecording(this);
-					status = RECORDING;
+					statusUpdate(STREAMING);
+					tempStatus = RECORDING;
 				}
 				else if (currentRecording && !shouldRecord) {
-					status = STREAMING;
+					statusUpdate(STREAMING);
+					tempStatus = STREAMING;
 					std::cout << "GazeTheWebOutput: Stopping recording" << std::endl;
 					delete currentRecording;
 					currentRecording = NULL;
 				}
 				else if (currentRecording && shouldRecord) {
 					std::cout << "GazeTheWebOutput: Recording" << std::endl;
-					status = RECORDING;
+					statusUpdate(RECORDING);
+					tempStatus = RECORDING;
+				}
+				else {
+					statusUpdate(STREAMING);
+					tempStatus = STREAMING;
 				}
 				break;
 			}

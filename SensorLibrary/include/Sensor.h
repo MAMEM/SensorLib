@@ -16,6 +16,7 @@ namespace SensorLib
 	enum SensorType {EEG, ET, GSR, MARKERS};
 	enum SensorStatus {ERR, WARNING, NOT_CONNECTED, BUSY, CONNECTED, STREAMING, RECORDING};
 	class Recorder;
+	class SensorLibrary;
 	class Sensor {
 	public:
 		Sensor();
@@ -26,7 +27,10 @@ namespace SensorLib
 		//kill LSL
 		virtual void disconnect() = 0;
 		//record to file
-
+		void statusUpdate(SensorStatus status);
+		
+		void registerStatusUpdateCallback(SensorLibrary *lib);
+		void unregisterStatusUpdateCallback();
 		lsl::stream_info getStreamInfo();
 
 		std::string name;
@@ -36,6 +40,7 @@ namespace SensorLib
 		recording* currentRecording;
 		bool shouldRecord;
 		bool shouldShutDown;
+		
 	protected:
 		SensorType type;
 		SensorDevice device;
@@ -43,6 +48,7 @@ namespace SensorLib
 		std::thread* lsl_thread;
 		std::atomic<bool> lslrunning;
 		std::atomic<SensorStatus> status;
+		SensorLibrary* sLib;
 		virtual void lsl_worker() = 0;
 
 	};

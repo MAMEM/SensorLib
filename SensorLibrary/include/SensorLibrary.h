@@ -24,9 +24,12 @@ namespace SensorLib
 		SENSORLIBRARY_API void printStatus(void);
 
 		SENSORLIBRARY_API void startRecording(void);
-		SENSORLIBRARY_API void stopRecording(void);
+		SENSORLIBRARY_API void stopRecording();
+		//SENSORLIBRARY_API void stopRecording(void);
 
 		SENSORLIBRARY_API void shutdownSensors(void);
+
+		void sensorUpdate(Sensor * sensor, SensorStatus status);
 
 		std::shared_ptr<Recorder> recorder;
 	private:

@@ -4,21 +4,24 @@
 //#include "MyGazeSensor.h"
 #include "MyGazeGTWSensor.h"
 #include "EnobioSensor.h"
-#include "ShimmerSensor.h"
+//#include "ShimmerSensor.h"
 #include "GazeOutputSensor.h"
+
+
 namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
 
 		sensors.push_back(new MyGazeGTWSensor);
 		sensors.push_back(new EnobioSensor);
-		sensors.push_back(new ShimmerSensor);
+		//sensors.push_back(new ShimmerSensor);
 		sensors.push_back(new GazeOutputSensor);
 		recorder = std::shared_ptr<Recorder>(new Recorder());
 		for (size_t i = 0; i < sensors.size(); i++) {
 			sensors[i]->connect();
 			sensors[i]->recorder = recorder;
 			sensors[i]->shouldRecord = true;
+			sensors[i]->registerStatusUpdateCallback(this);
 		}
 		
 	}
@@ -38,6 +41,9 @@ namespace SensorLib
 
 	void SensorLibrary::startRecording()
 	{
+		for (int i = 0; i < sensors.size(); i++) {
+			sensors[i]->shouldRecord = true;
+		}
 		/*
 		std::wstring outputFolder = L"../data";
 		if (CreateDirectory(outputFolder.c_str(), NULL) ||
@@ -56,6 +62,24 @@ namespace SensorLib
 		for (int i = 0; i < sensors.size(); i++) {
 			sensors[i]->shouldRecord = false;
 		}
+		int i = 0;
+		while (true) {
+			bool isRecording = false;
+			for (int i = 0; i < sensors.size(); i++) {
+				if (sensors[i]->getStatus() == RECORDING) {
+					isRecording = true;
+				}
+			}
+			if (isRecording == false) {
+				break;
+			}
+			Sleep(500);
+			i++;
+			if (i > 20) {
+				std::cout << "SensorLibrary: Could not stop recording shutting down anyway" << std::endl;
+				break;
+			}
+		}
 //		recorder->stopRecording();
 	}
 
@@ -64,5 +88,8 @@ namespace SensorLib
 			std::cout << "SensorLibrary: Shutting down the sensors" << std::endl;
 			sensors[i]->shouldShutDown = true;
 		}
+	}
+	void SensorLibrary::sensorUpdate(Sensor *sensor, SensorStatus status) {
+		std::cout << sensor->name << ": status upd " << status << std::endl;
 	}
 }

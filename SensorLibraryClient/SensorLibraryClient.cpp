@@ -12,7 +12,16 @@ int main()
 	system("pause");
 	lib->printStatus();
 	system("pause");
+	cout << "stopping recording" << endl;
 	lib->stopRecording();
+	cout << "recording stopped" << endl;
+	system("pause");
+	cout << "starting recording" << endl;
+	lib->startRecording();
+	system("pause");
+	cout << "stopping recording again" << endl;
+	lib->stopRecording();
+	cout << "recording stopped again" << endl;
 	/*
 	std::time_t t = std::time(0);
 	std::ostringstream oss;

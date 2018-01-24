@@ -1,5 +1,4 @@
 #include "MyGazeGTWSensor.h"
-
 using namespace SensorLib;
 __declspec(dllexport) MyGazeGTWSensor::MyGazeGTWSensor(void) {
 	type = ET;
@@ -28,36 +27,61 @@ __declspec(dllexport) void MyGazeGTWSensor::connect() {
 __declspec(dllexport) void  MyGazeGTWSensor::disconnect() {
 	lslrunning = false;
 }
+/*
+void MyGazeGTWSensor::statusUpdate(SensorStatus statusUpdate) {
+	if (status == statusUpdate)
+		return;
+	status = statusUpdate;
+	if (sLib) {
+		sLib->sensorUpdate(this,statusUpdate);
+	}
+}
 
+void MyGazeGTWSensor::registerStatusUpdateCallback(SensorLibrary * lib) {
+	sLib = lib;
+}
+
+void MyGazeGTWSensor::unregisterStatusUpdateCallback() {
+	if (sLib) {
+		sLib = NULL;
+	}
+}
+*/
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void MyGazeGTWSensor::lsl_worker() {
+	SensorStatus tempStatus;
 	while (lslrunning) {
 		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("name", "myGazeLSL", 1, 5);
-		status = NOT_CONNECTED;
+		tempStatus = NOT_CONNECTED;
 		for (size_t i = 0; i < results.size(); i++) {
 			if (!strcmp(results[i].name().c_str(), "myGazeLSL")) {
-				std::cout << "MyGazeGTW: Connected" << std::endl;
-				status = STREAMING;
 				if (!currentRecording && shouldRecord) {
 					std::cout << "MyGazeGTW: Starting recording" << std::endl;
 					currentRecording = recorder->startRecording(this);
-					status = RECORDING;
+					statusUpdate(STREAMING);
+					tempStatus = RECORDING;
 				}
 				else if(currentRecording && !shouldRecord){
-					status = STREAMING;
+					statusUpdate(STREAMING);
+					tempStatus = STREAMING;
 					std::cout << "MyGazeGTW: Stopping recording" << std::endl;
 					delete currentRecording;
 					currentRecording = NULL;
 				}
 				else if (currentRecording && shouldRecord) {
 					std::cout << "MyGazeGTW: Recording" << std::endl;
-					status = RECORDING;
+					statusUpdate(RECORDING);
+					tempStatus = RECORDING;
+				}
+				else {
+					statusUpdate(STREAMING);
+					tempStatus = STREAMING;
 				}
 				break;
 			}
 		}
-		if(status == NOT_CONNECTED){
+		if(tempStatus == NOT_CONNECTED){
 			std::cout << "MyGazeGTW: Stream does not exist" << std::endl;
 			if (currentRecording) {
 				std::cout << "MyGazeGTW: Stopping recording since stream ceased to exist" << std::endl;
@@ -66,7 +90,7 @@ void MyGazeGTWSensor::lsl_worker() {
 			}
 		}
 	}
-	status = NOT_CONNECTED;
+	statusUpdate(NOT_CONNECTED);
 	std::cout << "MyGazeGTW: Shutting down.." << std::endl;
 	if (currentRecording) {
 		std::cout << "MyGazeGTW: Stopping recording before shutting down" << std::endl;

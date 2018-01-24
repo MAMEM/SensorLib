@@ -21,6 +21,7 @@ namespace SensorLib {
 		__declspec(dllexport) virtual SensorStatus getStatus();
 		__declspec(dllexport) virtual void connect();
 		__declspec(dllexport) virtual void disconnect();
+
 	protected:
 		virtual void lsl_worker();
 	};
