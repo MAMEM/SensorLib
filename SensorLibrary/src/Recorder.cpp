@@ -1,5 +1,6 @@
 
 #include "Recorder.h"
+#include <experimental/filesystem>
 
 namespace SensorLib {
 
@@ -62,8 +63,12 @@ namespace SensorLib {
 		
 		std::time_t t = std::time(0);
 		std::ostringstream ss;
-		ss << "../data/" << streamToRecord[0].name() << "_" << t << ".xdf";
+		//ss << ../data/ << streamToRecord[0].name() << "_" << t << ".xdf";
+		//ss << "C:\\Users\\MAMEM\\Documents\\" << streamToRecord[0].name() << "_" << t << ".xdf";
+		const std::string currentDirectory = std::experimental::filesystem::current_path().generic_string();
+		ss << "C://sensordata/" << streamToRecord[0].name() << "_" << t << ".xdf";
 		const std::string filename = ss.str();
+		
 		return new recording(filename, streamToRecord, watchfor, syncOptions, true);
 		//currentRecordings.push_back(new recording(filename, streamToRecord, watchfor, syncOptions, true));
 	}

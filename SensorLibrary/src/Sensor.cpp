@@ -2,11 +2,13 @@
 #include "Sensor.h"
 #include <stdlib.h>
 #include "SensorLibrary.h"
+#include "recording.h"
 
 using namespace SensorLib;
 Sensor::Sensor(void) {
 	shouldRecord = false;
 	shouldShutDown = false;
+	threadRunning = false;
 }
 Sensor::~Sensor(void) {
 	if (currentRecording) {

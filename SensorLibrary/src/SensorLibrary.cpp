@@ -11,7 +11,12 @@
 namespace SensorLib
 {
 	SensorLibrary::SensorLibrary(void) {
-
+		std::wstring outputFolder = L"C://sensordata";
+		if (CreateDirectory(outputFolder.c_str(), NULL) ||
+			ERROR_ALREADY_EXISTS == GetLastError())
+		{
+			std::cout << "SensorLibrary: Created data folder" << std::endl;
+		}
 		sensors.push_back(new MyGazeGTWSensor);
 		sensors.push_back(new EnobioSensor);
 		//sensors.push_back(new ShimmerSensor);
@@ -27,6 +32,7 @@ namespace SensorLib
 	}
 
 	SensorLibrary::~SensorLibrary(void) {
+		stopRecording();
 		for (size_t i = 0; i < sensors.size(); i++) {
 			delete sensors[i];
 		}
@@ -80,10 +86,31 @@ namespace SensorLib
 				break;
 			}
 		}
-//		recorder->stopRecording();
 	}
 
 	void SensorLibrary::shutdownSensors() {
+		stopRecording();
+		for (int i = 0; i < sensors.size(); i++) {
+			sensors[i]->shouldShutDown = true;
+		}
+		int i = 0;
+		while(true) {
+			bool isRunning = false;
+			for (int i = 0; i < sensors.size(); i++) {
+				if (sensors[i]->threadRunning) {
+					isRunning = true;
+				}
+			}
+			if (isRunning == false) {
+				break;
+			}
+			Sleep(500);
+			i++;
+			if (i > 20) {
+				std::cout << "SensorLibrary: Could not shutdown sensors properly, shutting down anyway" << std::endl;
+				break;
+			}
+		}
 		for (int i = 0; i < sensors.size(); i++) {
 			std::cout << "SensorLibrary: Shutting down the sensors" << std::endl;
 			sensors[i]->shouldShutDown = true;

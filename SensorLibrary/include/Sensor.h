@@ -8,8 +8,8 @@
 #include "lsl_c.h"
 #include "lsl_cpp.h"
 #include <memory>
-#include "recording.h"
 
+class recording;
 namespace SensorLib
 {
 	enum SensorDevice { EMOTIV , MYGAZE, SHIMMER};
@@ -17,6 +17,7 @@ namespace SensorLib
 	enum SensorStatus {ERR, WARNING, NOT_CONNECTED, BUSY, CONNECTED, STREAMING, RECORDING};
 	class Recorder;
 	class SensorLibrary;
+	
 	class Sensor {
 	public:
 		Sensor();
@@ -40,6 +41,7 @@ namespace SensorLib
 		recording* currentRecording;
 		bool shouldRecord;
 		bool shouldShutDown;
+		bool threadRunning;
 		
 	protected:
 		SensorType type;

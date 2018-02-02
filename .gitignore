@@ -20,6 +20,7 @@ bfg-1.12.16.jar
 *.userprefs
 
 # Build results
+[Dd]ebug2/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

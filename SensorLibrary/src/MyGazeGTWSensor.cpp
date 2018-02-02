@@ -50,7 +50,8 @@ void MyGazeGTWSensor::unregisterStatusUpdateCallback() {
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void MyGazeGTWSensor::lsl_worker() {
 	SensorStatus tempStatus;
-	while (lslrunning) {
+	threadRunning = true;
+	while (!shouldShutDown) {
 		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("name", "myGazeLSL", 1, 5);
 		tempStatus = NOT_CONNECTED;
@@ -97,4 +98,5 @@ void MyGazeGTWSensor::lsl_worker() {
 		delete currentRecording;
 		currentRecording = NULL;
 	}
+	threadRunning = false;
 }

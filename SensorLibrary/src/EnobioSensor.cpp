@@ -32,7 +32,8 @@ __declspec(dllexport) void  EnobioSensor::disconnect() {
 //LSL inlet will be provided by NIC application, this just checks if it is available
 void EnobioSensor::lsl_worker() {
 	SensorStatus tempStatus;
-	while (lslrunning) {
+	threadRunning = true;
+	while (!shouldShutDown) {
 		Sleep(2000);
 		std::vector<lsl::stream_info> results = lsl::resolve_stream("type", "EEG",1,5);
 		tempStatus = NOT_CONNECTED;
@@ -79,4 +80,5 @@ void EnobioSensor::lsl_worker() {
 		delete currentRecording;
 		currentRecording = NULL;
 	}
+	threadRunning = false;
 }
